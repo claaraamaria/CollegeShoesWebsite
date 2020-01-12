@@ -308,6 +308,38 @@ namespace OnlineStore.Areas.Admin.Controllers
             return View(listOfProductVM);
         }
 
+        //GET: Admin/Shop/EditProduct
+        public ActionResult EditProduct(int id)
+        {
+            //Declare ProductVM
+            ProductVM model;
+
+            using (Db db = new Db())
+            {
+                //get the product
+                ProductDTO dto = db.Products.Find(id);
+
+                //make sure the product exists
+                if (dto == null)
+                {
+                    return Content("That product does not exist.");
+                }
+
+                //init model
+                model = new ProductVM(dto);
+
+                //make a select list
+                model.Categories = new SelectList(db.Categories.ToList(), "Id", "Name");
+
+                //get all gallery images
+                model.GalleryImages = Directory.EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                                                .Select(fn => Path.GetFileName(fn));
+            }
+            //return View with model
+            return View(model);
+        }
+
+
         /*
          public ActionResult DeleteCategory()
         {
