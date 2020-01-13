@@ -72,7 +72,6 @@ namespace OnlineStore.Areas.Admin.Controllers
             return PartialView(model);
         }
 
-        
         public ActionResult AddToCartPartial(int id)
         {
             //init CartVM list
@@ -124,6 +123,28 @@ namespace OnlineStore.Areas.Admin.Controllers
 
             //return partial view with model
             return PartialView(model);
+        }
+
+        // GET: /Cart/IncrementProduct
+        public JsonResult IncrementProduct(int productId)
+        {
+            //Init cart list
+            List<CartVM> cart = Session["cart"] as List<CartVM>;
+
+            using (Db db = new Db())
+            {
+                //Get cartVM from list
+                CartVM model = cart.FirstOrDefault(x => x.ProductId == productId);
+
+                //increment qty
+                model.Quantity++;
+
+                //store needed data
+                var result = new { qty = model.Quantity, price = model.Price };
+
+                //return Json with data
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
         }
 
         /*public ActionResult Index()
