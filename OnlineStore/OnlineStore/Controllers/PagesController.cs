@@ -55,5 +55,19 @@ namespace OnlineStore.Controllers
             //return view with model
             return View(model);
         }
+
+        public ActionResult PagesMenuPartial()
+        {
+            //declare a list
+            List<PageVM> pageVMList;
+
+            //Get all pages except the home page
+            using(Db db = new Db())
+            {
+                pageVMList = db.Pages.ToArray().OrderBy(x => x.Sorting).Where(x => x.Slug != "home").Select(x => new PageVM(x)).ToList();
+            }
+            //return the partial view with list
+            return PartialView(pageVMList);
+        }
     }
 }

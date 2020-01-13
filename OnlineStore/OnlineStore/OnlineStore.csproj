@@ -858,6 +858,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Pages\Index.cshtml" />
+    <Content Include="Views\Pages\PagesMenuPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />

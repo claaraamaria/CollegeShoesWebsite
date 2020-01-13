@@ -12,8 +12,9 @@ namespace OnlineStore
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute("Pages", "{page}", new { controller = "Pages", action = "Index"}, new[] { "OnlineStore.Controllers" });
+            
+            routes.MapRoute("PagesMenuPartial", "Pages/PagesMenuPartial", new { controller = "Pages", action = "PagesMenuPartial" }, new[] { "OnlineStore.Controllers" });
+            routes.MapRoute("Pages", "{page}", new { controller = "Pages", action = "Index" }, new[] { "OnlineStore.Controllers" });
             routes.MapRoute("Default", "", new { controller = "Pages", action = "Index" }, new[] { "OnlineStore.Controllers" });
 
             /*routes.MapRoute(
