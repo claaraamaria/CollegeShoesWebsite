@@ -455,6 +455,27 @@ namespace OnlineStore.Areas.Admin.Controllers
             return RedirectToAction("EditProduct");
         }
 
+        //GET: Admin/Shop/DeleteProduct/id
+        public ActionResult DeleteProduct(int id)
+        {
+            //Delete product from Db
+            using (Db db = new Db())
+            {
+                ProductDTO dto = db.Products.Find(id);
+                db.Products.Remove(dto);
+                db.SaveChanges();
+            }
+            //Delete product from foldder
+            var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\Uploads", Server.MapPath(@"\")));
+            string pathString = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString());
+
+            if (Directory.Exists(pathString))
+                Directory.Delete(pathString, true);
+
+            //redirect
+            return RedirectToAction("Products");
+        }
+        
         /*
          public ActionResult DeleteCategory()
         {
