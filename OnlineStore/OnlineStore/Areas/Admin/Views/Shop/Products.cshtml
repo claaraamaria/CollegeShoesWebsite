@@ -16,16 +16,13 @@
         {
             <option selected="selected" value="@item.Value">@item.Text</option>
         }
-
-
         else
         {
             <option value="@item.Value">@item.Text</option>
         }
     }
 </select>
-<br />
-<br />
+<br /><br />
 <p>
     @Html.ActionLink("Add New Product", "AddProduct")
 </p>
@@ -49,7 +46,6 @@
 
     @foreach (var product in ViewBag.OnePageOfProducts)
     {
-        <li>@product.Name</li>
         <tr>
             <td>
                 @product.Name
@@ -64,7 +60,6 @@
                 <a href="/admin/shop/EditProduct/@product.Id">
                     <img src="/Images/Uploads/Products/@product.Id/Thumbs/@product.ImageName" />
                 </a>
-                @product.Name
             </td>
             <td>
                 @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }) |
@@ -89,7 +84,7 @@
                 var url = $(this).val();
 
                 if (url) {
-                    window.location = "/admin/shop/Products?catId" + url;
+                    window.location = "/admin/shop/Products?catId=" + url;
                 }
                 return false;
             });
@@ -97,7 +92,7 @@
             ////////////////////////////////////////////////////////////////
 
             /*
-             * Confirm page deletion
+             * Confirm product deletion
              */
 
             $("a.delete").click(function() {
