@@ -69,5 +69,21 @@ namespace OnlineStore.Controllers
             //return the partial view with list
             return PartialView(pageVMList);
         }
+
+        public ActionResult SidebarPartial()
+        {
+            //declare the model
+            SidebarVM model;
+
+            //init moodel
+            using(Db db = new Db())
+            {
+                SidebarDTO dto = db.Sidebar.Find(1);
+                model = new SidebarVM(dto);
+            }
+
+            //return PartialView view with model
+            return PartialView(model);
+        } 
     }
 }
