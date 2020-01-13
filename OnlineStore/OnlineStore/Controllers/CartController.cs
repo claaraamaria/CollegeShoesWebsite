@@ -9,11 +9,32 @@ namespace OnlineStore.Areas.Admin.Controllers
 {
     public class CartController : Controller
     {
-        // GET: Admin/Cart
+        // GET: Cart
         public ActionResult Index()
         {
-            return View();
+            //Init the cart list
+            var cart = Session["cart"] as List<CartVM> ?? new List<CartVM>();
+
+            //check if the cart is empty
+            if(cart.Count == 0 || Session["cart"] == null)
+            {
+                ViewBag.Message = "Your cart is empty.";
+                return View();
+            }
+
+            //calculate total and sa to viewBag
+            decimal total = 0m;
+
+            foreach(var item in cart)
+            {
+                total += item.Total;
+            }
+            ViewBag.GrandTotal = total;
+
+            //return view with list
+            return View(cart);
         }
+
         public ActionResult CartPartial()
         {
             //Init cartVM
