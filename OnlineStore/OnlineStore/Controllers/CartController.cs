@@ -1,4 +1,5 @@
-﻿using OnlineStore.Models.ViewModels.Cart;
+﻿using OnlineStore.Models.Data;
+using OnlineStore.Models.ViewModels.Cart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,60 @@ namespace OnlineStore.Areas.Admin.Controllers
                 model.Quantity = 0;
                 model.Price = 0m;
             }
+
+            //return partial view with model
+            return PartialView(model);
+        }
+
+        
+        public ActionResult AddToCartPartial(int id)
+        {
+            //init CartVM list
+            List<CartVM> cart = Session["cart"] as List<CartVM> ?? new List<CartVM>();
+
+            //init CartVM
+            CartVM model = new CartVM();
+
+            using (Db db = new Db()) 
+            {
+                //get the product
+                ProductDTO product = db.Products.Find(id);
+
+                //check if the product is already in the cart
+                var productInCart = cart.FirstOrDefault(x => x.ProductId == id);
+
+                // if not, add new
+                if (productInCart == null)
+                {
+                    cart.Add(new CartVM()
+                    {
+                        ProductId = product.Id,
+                        ProductName = product.Name,
+                        Quantity = 1,
+                        Price = product.Price,
+                        Image = product.ImageName
+                    });
+                }
+                else 
+                {
+                    //if it is, increment
+                    productInCart.Quantity++;
+                }
+            }
+            //get total quantity and price and add to model
+            int qty = 0;
+            decimal price = 0m;
+
+            foreach(var item in cart)
+            {
+                qty += item.Quantity;
+                price += item.Quantity * item.Price;
+            }
+            model.Quantity = qty;
+            model.Price = price;
+
+            //save cart back to session
+            Session["cart"] = cart;
 
             //return partial view with model
             return PartialView(model);
